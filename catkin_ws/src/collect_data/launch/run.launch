@@ -1,0 +1,10 @@
+<launch>
+    <!-- 启动 node1 -->
+    <node name="propriception_pub" pkg="collect_data" type="xarm_propriception.py" output="screen" />
+
+    <!-- 启动 node2 -->
+    <node name="realsense_processor" pkg="collect_data" type="realsense.py" output="screen" />
+
+    <!-- 启动 node3 -->
+    <node name="saving_node" pkg="collect_data" type="save_data.py" output="screen" />
+</launch>

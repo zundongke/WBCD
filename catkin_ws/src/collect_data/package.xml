@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>realsense</name>
+  <name>collect_data</name>
   <version>0.0.0</version>
   <description>The realsense package</description>
 
