@@ -6,8 +6,8 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 import pyrealsense2 as rs
 from xarm_cotroller import xArm6Controller
-from realsense.msg import action
-from realsense.msg import propriception
+from collect_data.msg import PosCmd
+from collect_data.msg import JointInformation
 class save_data():
     def __init__(self):
         rospy.init_node('saving_node', anonymous=True)
@@ -16,21 +16,28 @@ class save_data():
         self.img=None
         self.state=None
         self.action=None
-        self.rate=rospy.Rate(10)
+        self.rate=rospy.Rate(30)
         self.temp_dict={}
         self.img_subscriber=rospy.Subscriber('realsense_img', Image,self.img_callback)
-        self.propriception_subscriber=rospy.Subscriber('xarm_msg',propriception, self.pro_callback)
-        self.control_subscriber=rospy.Subscriber('action',action,self.control_callback)
+        self.propriception_subscriber=rospy.Subscriber('xarm_msg',JointInformation, self.pro_callback)
+        self.control_subscriber=rospy.Subscriber('action',PosCmd,self.control_callback)
     def img_callback(self,msg):
         self.img=self.bridge.imgmsg_to_cv2(msg)
         self.temp_dict['img']=self.img
     def pro_callback(self,msg):
-        self.temp_dict['state/qpos']=msg.qpos
-        self.temp_dict['state/qvel']=msg.qvel
-        self.temp_dict['state/qeff']=msg.qeff
+        self.temp_dict['state/pos']=msg.joint_pos
+        self.temp_dict['state/vel']=msg.joint_vel
+        self.temp_dict['state/cur']=msg.joint_cur
     def control_callback(self,msg):
-        self.action=msg
-        self.temp_dict['action']=msg
+        action=dict()
+        action['x']=msg.x
+        action['y']=msg.y
+        action['z']=msg.z
+        action['roll']=msg.roll
+        action['pitch']=msg.pitch
+        action['yaw']=msg.yaw
+        action['gripper']=msg.gripper
+        self.temp_dict['action']=action
     def run(self):
         while not rospy.is_shutdown():
             # 将当前时间步的数据添加到 episode 列表中

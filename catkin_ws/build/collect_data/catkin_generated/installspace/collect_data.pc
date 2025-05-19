@@ -1,0 +1,8 @@
+prefix=/home/sealab/umi_collect_data/WBCD/catkin_ws/install
+
+Name: collect_data
+Description: Description of collect_data
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lcollect_data
+Requires: cv_bridge image_transport realsense2_camera roscpp rospy sensor_msgs std_msgs message_runtime
