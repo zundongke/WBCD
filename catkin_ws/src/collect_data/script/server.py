@@ -3,6 +3,7 @@ import json
 import logging
 from typing import Dict, Optional
 import rospy
+from collect_data.msg import PosCmd
 # 配置日志
 logging.basicConfig(
     level=logging.INFO,
